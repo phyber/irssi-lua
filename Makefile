@@ -18,12 +18,13 @@ IRSSI_INCLUDE = -I$(IRSSI_DIST) -I$(IRSSI_DIST)/src -I$(IRSSI_DIST)/src/fe-commo
 				-I$(IRSSI_DIST)/src/irc/core -I$(IRSSI_DIST)/src/irc/dcc -I$(IRSSI_DIST)/src/irc/notifylist
 
 GLIB_CFLAGS = $(shell pkg-config glib-2.0 --cflags)
-LUA_LIBS = $(shell pkg-config lua --libs)
+LUA_LIBS = $(shell pkg-config lua5.1 --libs)
+LUA_CFLAGS = $(shell pkg-config lua5.1 --cflags)
 
 all: liblua.so
 
 %.o: %.c
-	$(CC) $(CFLAGS) $(GLIB_CFLAGS) $(IRSSI_INCLUDE) -I. -fPIC -c $<
+	$(CC) $(CFLAGS) $(GLIB_CFLAGS) $(LUA_CFLAGS) $(IRSSI_INCLUDE) -I. -fPIC -c $<
 
 liblua.so: $(OBJECTS)
 	$(CC) $(CFLAGS) $(LDFLAGS) $(LUA_LIBS) -fPIC -shared $(OBJECTS) -o $@
